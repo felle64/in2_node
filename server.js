@@ -1,11 +1,11 @@
 const express = require("express");
-const dotenv = require("dotenv");
 const blockchainRoutes = require("./routes/blockchainRoutes");
 
-// Load env vars
-dotenv.config({ path: "./config/config.env" });
-
 const app = express();
+
+const PORT = process.argv[2];
+
+app.use(express.json());
 
 // Mount routers
 app.use("/api/bc", placeholder);

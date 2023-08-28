@@ -1,10 +1,10 @@
-const { blockchainJournal } = require("../config/config");
+const { messageJournal } = require("../config/config");
 
 exports.getBlockchain = (req, res) => {
   res.status(200).json({
     status: "success",
     data: {
-      blockchain: blockchainJournal,
+      blockchain: messageJournal,
     },
   });
 };

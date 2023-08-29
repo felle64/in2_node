@@ -30,18 +30,18 @@ Blockchain.prototype.getLastBlock = function () {
   return this.chain.at(-1);
 };
 
-Blockchain.prototype.addMessage = function (log, sender, recipient) {
-  const message = {
-    log,
+Blockchain.prototype.addMessage = function (message, sender, recipient) {
+  const log = {
+    message,
     sender,
     recipient,
     messageId: uuidv4().split("-").join(""),
   };
 
-  return message;
+  return log;
 };
-Blockchain.prototype.addMessageToPendingList = function (message) {
-  this.pendingList.push(message);
+Blockchain.prototype.addMessageToPendingList = function (log) {
+  this.pendingList.push(log);
   return this.getLastBlock()["index"] + 1;
 };
 
@@ -73,8 +73,12 @@ Blockchain.prototype.isChainValid = function (chain) {
       currentBlock["data"],
       currentBlock["nonce"]
     );
-    if (blockHash.substring(0, 4) !== "0000") valid = false;
-    if (currentBlock["previousHash"] !== prevBlock["hash"]) valid = false;
+    if (blockHash !== currentBlock["hash"]) {
+      valid = false;
+    }
+    if (currentBlock["previousHash"] !== prevBlock["hash"]) {
+      valid = false;
+    }
   }
   const genesisBlock = chain[0];
   const correctNonce = genesisBlock["nonce"] === 1;

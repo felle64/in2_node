@@ -7,7 +7,7 @@ function Blockchain() {
   this.nodeUrl = process.argv[3];
   this.networkNodes = [];
 
-  this.createBlock(1, "Genisis", "Genisis");
+  this.createBlock(1, "Genesis", "Genesis");
 }
 
 Blockchain.prototype.createBlock = function (nonce, previousHash, hash) {
@@ -75,20 +75,23 @@ Blockchain.prototype.isChainValid = function (chain) {
     );
     if (blockHash !== currentBlock["hash"]) {
       valid = false;
+      console.log("Hash is not correct");
     }
     if (currentBlock["previousHash"] !== prevBlock["hash"]) {
       valid = false;
+      console.log("Previous hash is not correct");
     }
   }
   const genesisBlock = chain[0];
   const correctNonce = genesisBlock["nonce"] === 1;
-  const correctPreviousHash = genesisBlock["previousHash"] === "Genisis";
-  const correctHash = genesisBlock["hash"] === "Genisis";
+  const correctPreviousHash = genesisBlock["previousHash"] === "Genesis";
+  const correctHash = genesisBlock["hash"] === "Genesis";
   const correctData = genesisBlock["data"].length === 0;
 
-  if (!correctNonce || !correctPreviousHash || !correctHash || !correctData)
+  if (!correctNonce || !correctPreviousHash || !correctHash || !correctData) {
+    console.log("Genesis block is not correct");
     valid = false;
-
+  }
   return valid;
 };
 

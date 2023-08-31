@@ -1,4 +1,4 @@
-const { messageJournal, nodeAddress } = require("../config/config");
+const { messageJournal } = require("../config/config");
 const axios = require("axios");
 
 exports.getBlockchain = (req, res) => {

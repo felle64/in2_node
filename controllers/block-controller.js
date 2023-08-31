@@ -1,4 +1,4 @@
-const messageJournal = require("../config/config");
+const { messageJournal } = require("../config/config");
 
 exports.addBlock = (req, res) => {
   const newBlock = req.body.block;

@@ -2,11 +2,11 @@ const express = require("express");
 const router = express.Router();
 
 const {
-  addMessageToPendingList,
+  message,
   broadcastMessage,
 } = require("../controllers/message-controller");
 
-router.route("/add").post(addMessageToPendingList);
+router.route("/add").post(message);
 
 router.route("/broadcast").post(broadcastMessage);
 

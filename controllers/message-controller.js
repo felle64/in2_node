@@ -1,13 +1,13 @@
 const { messageJournal } = require("../config/config");
+const axios = require("axios");
 
-exports.addMessageToPendingList = (req, res) => {
+exports.message = (req, res) => {
   const newMessage = req.body;
   const blockIndex = messageJournal.addMessageToPendingList(newMessage);
-  res.status(200).json({
-    status: "success",
-    data: {
-      message: `Message will be added to block ${blockIndex}`,
-    },
+
+  res.status(201).json({
+    success: true,
+    data: `will be added to block ${blockIndex}`,
   });
 };
 
@@ -17,11 +17,14 @@ exports.broadcastMessage = (req, res) => {
     req.body.sender,
     req.body.recipient
   );
-  const blockIndex = messageJournal.addMessageToPendingList(newMessage);
-  res.status(200).json({
-    status: "success",
-    data: {
-      message: `Message will be added to block ${blockIndex}`,
-    },
+  messageJournal.addMessageToPendingList(newMessage);
+
+  messageJournal.networkNodes.forEach(async (networkNodeUrl) => {
+    await axios.post(`${networkNodeUrl}/api/v1/message/add`, newMessage);
+  });
+
+  res.status(201).json({
+    success: true,
+    data: newMessage,
   });
 };

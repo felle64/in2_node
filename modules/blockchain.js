@@ -31,17 +31,17 @@ Blockchain.prototype.getLastBlock = function () {
 };
 
 Blockchain.prototype.addMessage = function (message, sender, recipient) {
-  const log = {
+  const data = {
     message,
     sender,
     recipient,
     messageId: uuidv4().split("-").join(""),
   };
 
-  return log;
+  return data;
 };
-Blockchain.prototype.addMessageToPendingList = function (log) {
-  this.pendingList.push(log);
+Blockchain.prototype.addMessageToPendingList = function (data) {
+  this.pendingList.push(data);
   return this.getLastBlock()["index"] + 1;
 };
 

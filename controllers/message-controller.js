@@ -7,7 +7,7 @@ exports.message = (req, res) => {
 
   res.status(201).json({
     success: true,
-    data: `will be added to block ${blockIndex}`,
+    data: `Message will be added to block nr ${blockIndex}`,
   });
 };
 

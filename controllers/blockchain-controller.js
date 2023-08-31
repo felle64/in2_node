@@ -1,4 +1,4 @@
-const { messageJournal } = require("../config/config");
+const { messageJournal, nodeAddress } = require("../config/config");
 const axios = require("axios");
 
 exports.getBlockchain = (req, res) => {
@@ -30,14 +30,12 @@ exports.mineBlock = async (req, res) => {
   await axios.post(`${messageJournal.nodeUrl}/api/v1/message/broadcast`, {
     message: "Block mined!",
     sender: "System",
-    recipient: "All",
+    recipient: nodeAddress,
   });
   console.log("Block mined!");
 
-  res.status(200).json({
+  res.status(201).json({
     success: true,
-    data: {
-      block,
-    },
+    data: block,
   });
 };

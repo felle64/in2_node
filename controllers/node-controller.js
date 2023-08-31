@@ -1,4 +1,4 @@
-const fetch = require("node-fetch");
+const axios = require("axios");
 const { messageJournal } = require("../config/config");
 
 exports.brodcastNode = async (req, res) => {
@@ -8,26 +8,25 @@ exports.brodcastNode = async (req, res) => {
     messageJournal.networkNodes.push(urlToAdd);
   }
 
-  messageJournal.networkNodes.forEach(async (url) => {
+  for (const url of messageJournal.networkNodes) {
     const body = { nodeUrl: urlToAdd };
 
-    await fetch(`${url}/api/v1/node/register`, {
-      method: "POST",
-      body: JSON.stringify(body),
+    try {
+      await axios.post(`${url}/api/v1/node/register`, body, {
+        headers: { "Content-Type": "application/json" },
+      });
+    } catch (err) {
+      console.log(err);
+    }
+
+    const bulkBody = {
+      nodes: [...messageJournal.networkNodes, messageJournal.nodeUrl],
+    };
+
+    await axios.post(`${urlToAdd}/api/v1/node/register-bulk`, bulkBody, {
       headers: { "Content-Type": "application/json" },
     });
-  });
-
-  const body = {
-    nodes: [...messageJournal.networkNodes, messageJournal.nodeUrl],
-  };
-
-  await fetch(`${urlToAdd}/api/v1/node/register-bulk`, {
-    method: "POST",
-    body: JSON.stringify(body),
-    headers: { "Content-Type": "application/json" },
-  });
-
+  }
   res
     .status(201)
     .json({ success: true, data: `Connected to node ${urlToAdd}` });

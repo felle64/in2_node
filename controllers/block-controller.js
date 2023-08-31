@@ -5,9 +5,11 @@ exports.addBlock = (req, res) => {
   const lastBlock = messageJournal.getLastBlock();
   const correctHash = lastBlock.hash === newBlock.previousHash;
   const correctIndex = lastBlock.index + 1 === newBlock.index;
+  //console.log(lastBlock.hash, newBlock.previousHash);
+  //console.log(lastBlock.index, newBlock.index);
 
   if (correctHash && correctIndex) {
-    console.log(newBlock);
+    //console.log(newBlock);
     messageJournal.chain.push(newBlock);
 
     messageJournal.pendingList = [];

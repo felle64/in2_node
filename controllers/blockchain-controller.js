@@ -21,20 +21,16 @@ exports.mineBlock = async (req, res) => {
   const hash = messageJournal.createHash(prevHash, currentData, nonce);
   const block = messageJournal.createBlock(nonce, prevHash, hash);
 
-  messageJournal.networkNodes.forEach(async (networkNodeUrl) => {
-    await axios
-      .post(`${networkNodeUrl}/api/v1/block/add`, { block: block })
-      .catch((err) => console.log(err));
-  });
+  for (let i = 0; i < messageJournal.networkNodes.length; i++) {
+    const networkNodeUrl = messageJournal.networkNodes[i];
+    try {
+      await axios.post(`${networkNodeUrl}/api/v1/block/add`, { block: block });
+    } catch {
+      (err) => console.log(err);
+    }
+  }
 
-  await axios.post(`${messageJournal.nodeUrl}/api/v1/message/broadcast`, {
-    message: "Block mined!",
-    sender: "System",
-    recipient: nodeAddress,
-  });
-  console.log("Block mined!");
-
-  res.status(201).json({
+  res.status(200).json({
     success: true,
     data: block,
   });

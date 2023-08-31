@@ -69,11 +69,11 @@ Blockchain.prototype.isChainValid = function (chain) {
     const currentBlock = chain[i];
     const prevBlock = chain[i - 1];
     const blockHash = this.createHash(
-      prevBlock["hash"],
-      currentBlock["data"],
-      currentBlock["nonce"]
+      prevBlock.hash,
+      { data: currentBlock.data, index: currentBlock.index },
+      currentBlock.nonce
     );
-    if (blockHash !== currentBlock["hash"]) {
+    if (blockHash !== currentBlock.hash) {
       valid = false;
       console.log("Hash is not correct");
     }

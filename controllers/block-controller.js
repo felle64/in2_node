@@ -1,3 +1,5 @@
+const messageJournal = require("../config/config");
+
 exports.addBlock = (req, res) => {
   const newBlock = req.body.block;
   const lastBlock = messageJournal.getLastBlock();
